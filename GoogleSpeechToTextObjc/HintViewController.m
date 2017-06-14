@@ -173,8 +173,6 @@
     service = [service stringByAppendingString:@"?key="];
     service = [service stringByAppendingString:API_KEY];
     
-    //    NSData *audioData = [NSData dataWithContentsOfFile:[self soundFilePath]];
-    
     NSDictionary *configRequest = nil;
   
     if ( phraseDict == nil )
@@ -183,8 +181,6 @@
         configRequest = @{@"encoding":@"LINEAR16",
                           @"sampleRateHertz":@(SAMPLE_RATE),
                           @"languageCode":@"en-US"};
-        //                                  @"maxAlternatives":@30,
-        //                                  @"speechContexts": phrasDict};
     }
     else
     {
@@ -192,13 +188,10 @@
                           @"sampleRateHertz":@(SAMPLE_RATE),
                           @"languageCode":@"en-US",
                           @"speechContexts": phraseDict};
-        //                                  @"maxAlternatives":@30,
     }
-    //    NSDictionary *audioRequest = @{@"content":[audioData base64EncodedStringWithOptions:0]};
     
-    //    NSDictionary *audioURI = [NSDictionary dictionaryWithObjectsAndKeys:@"https://storage.googleapis.com/texttospeech-poc/sound.flac", @"uri", nil];
     NSDictionary *requestDictionary = @{@"config":configRequest,
-                                        @"audio": @{@"uri":_googleCloudFileURI}}; //@"gs://texttospeech-poc/sound.flac"
+                                        @"audio": @{@"uri":_googleCloudFileURI}};
     NSError *error;
     NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestDictionary
                                                           options:0
@@ -234,17 +227,8 @@
                             {
                             }
                             
-                            /*
-                             NSArray *arr = [json objectForKey:@"results"];
-                             NSDictionary *alter = arr[0];
-                             NSArray *alterArray = [alter objectForKey:@"alternatives"];
-                             for (NSDictionary *dict in alterArray)
-                             {
-                             _textView.text = [dict objectForKey:@"transcript"];
-                             }
-                             */
                             NSString *stringResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                            //                      _textView.text = stringResult;
+                            
                             NSLog(@"RESULT: %@", stringResult);
                         });
      }];
@@ -297,7 +281,7 @@
 - (IBAction)getTranscript:(id)sender
 {
     _messageLabel.text = @"Transcripting...";
-    NSString *service = [NSString stringWithFormat:@"https://speech.googleapis.com/v1/operations/%@?key=%@", _transcriptId, API_KEY]; //@"https://speech.googleapis.com/v1/operations/1797849961581420399?key=AIzaSyDz7AUTIV5lr_DbIDtwKFxSNqzMWbn2InY";
+    NSString *service = [NSString stringWithFormat:@"https://speech.googleapis.com/v1/operations/%@?key=%@", _transcriptId, API_KEY];
     NSURL *URL = [NSURL URLWithString:service];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     
@@ -330,9 +314,6 @@
                                                          
                                                      }
                                                      
-                                                     //                                                     NSString *stringResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                                     //                                                     NSLog(@"RESULT: %@", stringResult);
-                                                     //                                                     _textView.text = stringResult;
                                                      _messageLabel.text = @"";
                                                  });
                               }];
